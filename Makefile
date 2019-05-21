@@ -11,9 +11,10 @@
 COMPILER = gcc
 
 # The C flags to pass to gcc
-C_FLAGS = -Wall -Wextra
+C_FLAGS = -Wall -Wextra -std=c99
 
-# prepend the command with '@' so that Make does not print the command before running it 
+
+# prepend the command with '@' so that Make does not print the command before running it
 help:
 	@printf "available command:\n"
 	@printf "	make help               (this command)\n"
@@ -24,10 +25,11 @@ help:
 	@printf "	make peek_test          (to run test cases against the peek instruction for your program)\n"
 	@printf "	make pop_test           (to run test cases against the pop instruction for your program)\n"
 	@printf "	make compound_test      (to run test cases against all the instruction for your program)\n"
+	@printf " make extra_test					(to run our extra made test cases)\n"
 
 # link our .o files to make an executable
 Stack: Stack.o
-	$(COMPILER) $(C_FLAGS) -o Stack Stack.o 
+	$(COMPILER) $(C_FLAGS) -o Stack Stack.o
 
 # compile the `Stack.o` file
 Stack.o: Stack.c
@@ -35,7 +37,7 @@ Stack.o: Stack.c
 
 ##################################################################
 # Test Cases
-test: exit_test push_test peek_test pop_test compound_test
+test: exit_test push_test peek_test pop_test compound_test extra_test
 
 ##############################
 # exit test cases
@@ -53,7 +55,7 @@ push_test: push_test1 push_test2
 
 push_test1: Stack
 	./Stack < Data/push_test1.input > push_test1.result
-	./TestPassed.sh push_test1.result Data/push_test1.expected 
+	./TestPassed.sh push_test1.result Data/push_test1.expected
 
 push_test2: Stack
 	./Stack < Data/push_test2.input > push_test2.result
@@ -103,3 +105,9 @@ compound_test3: Stack
 	./Stack < Data/compound_test3.input > compound_test3.result
 	./TestPassed.sh compound_test3.result Data/compound_test3.expected
 
+
+extra_test: extra_test1
+
+extra_test1:  Stack
+	./Stack < Data/extra_test1.input > extra_test1.result
+	./TestPassed.sh extra_test1.result Data/extra_test1.expected

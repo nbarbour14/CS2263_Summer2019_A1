@@ -3,7 +3,7 @@
  *
  *
  *	Created by Jean-Philippe Legault
- * 
+ *
  * Your task is to implement the section with the comment:
  * * TODO: finish implementing this
  ******************************************************/
@@ -38,9 +38,9 @@ bool is_whitespace(char in)
  *		print_stack
  *
  * expects:
- *		a pointer to the root of the stack 
+ *		a pointer to the root of the stack
  *		a pointer to the current size of the stack
- * 
+ *
  * Prints a visual representation of the current state of the stack
  */
 void print_stack(int *stack, int *size)
@@ -72,6 +72,17 @@ bool push(int *stack, int *size, int max_size, int to_push)
 	/**
 	 * TODO: finish implementing this
 	 */
+	 int currentSize = *(size);
+
+	 if(currentSize < max_size){
+		*(stack + currentSize) = to_push;
+		*(size) += 1;
+		return true;
+	 }
+
+
+
+	 return false;
 }
 
 /**
@@ -89,11 +100,23 @@ bool push(int *stack, int *size, int max_size, int to_push)
  *
  * The pop function pops a value from the passed in stack and stores it at the to_return location.
  */
+
+
+
 bool pop(int *stack, int *size, int *to_return)
 {
-	/**
-	 * TODO: finish implementing this
-	 */
+
+
+	 int currentSize = *(size);
+	 if(currentSize > 0){
+		 *(to_return) = *(stack + currentSize - 1);
+		 *(stack + currentSize) = 0;
+		 *(size) = currentSize - 1;
+		 return true;
+	 }
+
+	 return false;
+
 }
 
 /**
@@ -111,12 +134,22 @@ bool pop(int *stack, int *size, int *to_return)
  *
  * The peek function looks at the top value from the stack and stores it at the to_return location.
  */
+
+
 bool peek(int *stack, int *size, int *to_return)
 {
-	/**
-	 * TODO: finish implementing this
-	 */
+
+	 int currentSize = *(size);
+	 if(currentSize > 0){
+		 *(to_return) = stack[currentSize-1];
+		 return true;
+	 }
+
+	 return false;
+
 }
+
+
 
 /*******************************************************
  * function implementation
@@ -141,7 +174,7 @@ bool peek(int *stack, int *size, int *to_return)
  *			'x' to exit the program
  *
  *		if the instruction is push ('u'),
- *			we read in an integer (you may assume it is a valid integer) 
+ *			we read in an integer (you may assume it is a valid integer)
  *			push the read value onto the stack
  *			if failed
  *				printf("failed push\n")
@@ -168,7 +201,7 @@ bool peek(int *stack, int *size, int *to_return)
  *		else
  *			printf("invalid instruction %c\n", input_instruction);
  */
-int main( int argc, char **argv )
+int main(void)
 {
 	// keep track of the max size and the current size of the stack
 	int stack_max_size = 5;
@@ -183,13 +216,14 @@ int main( int argc, char **argv )
 		stack[i] = 0;
 	}
 
-	// count the number of instructions (peek, pop, push) that successfully happened 
+	// count the number of instructions (peek, pop, push) that successfully happened
 	int successful_instructions = 0;
 	bool stop_execution = false;
 
 	while(!stop_execution)
 	{
 		// read the input instruction (a single character)
+
 		char input_instruction = 0;
 		scanf("%c", &input_instruction);
 
@@ -199,6 +233,55 @@ int main( int argc, char **argv )
 			/**
 			 * TODO: finish implementing this
 			 */
+
+			 //push function
+			 if(input_instruction == 'u'){
+
+				 int pushValue = 0;
+				 scanf("%d", &pushValue);
+				 if(push(stack, &stack_current_size, stack_max_size, pushValue)){
+					 printf("%d\n", pushValue);
+					 successful_instructions++;
+				 }
+				 else{
+					 printf("failed push\n");
+				 }
+			 }
+
+			 //pop function
+			 else if(input_instruction == 'o'){
+				 int popValue = 0;
+
+				 if(pop(stack, &stack_current_size, &popValue)){
+					 printf("%d\n", popValue);
+					 successful_instructions++;
+
+				 }
+				 else{
+					 printf("failed pop\n");
+				 }
+			 }
+
+			 //peek function
+			 else if(input_instruction == 'e'){
+				 int peekValue = 0;
+				 if(peek(stack, &stack_current_size, &peekValue)){
+					 printf("%d\n", peekValue);
+					 successful_instructions++;
+				 }
+				 else{
+					 printf("failed peek\n");
+				 }
+			 }
+
+			 //exitfunction
+			 else if(input_instruction == 'x'){
+				 stop_execution = true;
+			 }
+
+			 else{
+				 printf("invalid instruction %c\n", input_instruction);
+			 }
 		}
 	}
 
